@@ -1,0 +1,52 @@
+name: API Automation Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'For a single tag use @get_products, for multiple tags use comma-separated values (e.g., @get_products,@create_product)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t dev/api-automation-test .
+
+    - name: Create .env file
+      run: |
+        echo "BASE_URL=${{ secrets.BASE_URL }}" > .env
+
+    - name: Run all tests
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.tags == ''
+      run: |
+        docker run -v $(pwd):/opt/api-automation \
+        --env-file .env \
+        --name api-automation-test \
+        dev/api-automation-test \
+        behave --no-skipped --format=pretty
+
+    - name: Run tagged tests
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.tags != ''
+      run: |
+        docker run -v $(pwd):/opt/api-automation \
+        --env-file .env \
+        --name api-automation-test \
+        dev/api-automation-test \
+        behave -t ${{ github.event.inputs.tags }} \
+        --no-skipped \
+        --format=pretty
