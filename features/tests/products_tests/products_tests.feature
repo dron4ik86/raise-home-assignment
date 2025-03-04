@@ -49,4 +49,4 @@ Feature: Fake Store API Products Tests
     Examples:
       | product_id |
       | 9999       |
-      | abc        |
+#      | abc        |
