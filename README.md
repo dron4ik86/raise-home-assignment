@@ -6,7 +6,7 @@ and [JSON Schema validation](https://python-jsonschema.readthedocs.io/en/latest/
 
 ## Documentation
 
-- [QA Automation Strategy](https://github.com/dron4ik86/raise-home-assignment/blob/main/docs/automation_strategy.md) - Our approach to test automation
+- [QA Automation Strategy](https://github.com/dron4ik86/raise-home-assignment/blob/main/docs/AutomationStrategy.md) - Our approach to test automation
 - [Team Management Plan](https://github.com/dron4ik86/raise-home-assignment/blob/main/docs/TeamManagementPlan.md) - How to build and manage a QA team
 
 ## Overview
